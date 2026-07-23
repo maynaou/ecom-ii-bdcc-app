@@ -24,25 +24,25 @@ public class InventoryServiceApplication {
 			                                .id(UUID.randomUUID().toString())
 											.name("djaja")
 											.price(1252.5)
-											.quantite(120)
+											.quantity(120)
 			                                .build());
 			  productRepository.save(Product.builder()
 			                                .id(UUID.randomUUID().toString())
 											.name("djaja2")
 											.price(12525.5)
-											.quantite(120)
+											.quantity(120)
 			                                .build());
 			  productRepository.save(Product.builder()
 			                                .id(UUID.randomUUID().toString())
 											.name("djaja3")
 											.price(12526.5)
-											.quantite(120)
+											.quantity(120)
 			                                .build());
 			  productRepository.save(Product.builder()
 			                                .id(UUID.randomUUID().toString())
 											.name("djaja4")
 											.price(12527.5)
-											.quantite(140)
+											.quantity(140)
 			                                .build());
 		};
 	}
