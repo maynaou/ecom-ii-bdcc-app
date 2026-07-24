@@ -12,6 +12,8 @@ target/
 .springBeans
 .sts4-cache
 
+config-repo/
+
 # IntelliJ
 .idea/
 *.iml
