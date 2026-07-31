@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.annotation.Bean;
 import com.example.customer_service.repository.CustomerRepository;
 import com.example.customer_service.config.CustomerConfigParams;
@@ -21,7 +22,7 @@ public class CustomerServiceApplication {
 	}
 
 	@Bean
-	CommandLineRunner commandLineRunner(CustomerRepository customerRespository) {
+	CommandLineRunner commandLineRunner(CustomerRepository customerRespository, StreamBridge streamBridge) {
 		return args ->  {
 
 		    Stream.of("maynaou","ronaldo","yassin","momo","dodo").forEach((n) -> {
@@ -29,9 +30,9 @@ public class CustomerServiceApplication {
 			                    .name(n)
 								.email(n + "@gmail.com")
 			                    .build();
-			        customerRespository.save(customer);   
+			        customerRespository.save(customer);
+					streamBridge.send("customerProducer-out-0",customer); 
 			});
-
 		};
 	}
 

@@ -12,12 +12,11 @@ import org.springframework.context.annotation.Bean;
 
 import com.example.billing_service.entities.Bill;
 import com.example.billing_service.entities.ProductItem;
-import com.example.billing_service.feign.CustomerRestClient;
-import com.example.billing_service.feign.ProductRestClient;
 import com.example.billing_service.model.Customer;
 import com.example.billing_service.model.Product;
 import com.example.billing_service.repository.BillRepository;
 import com.example.billing_service.repository.ProductItemRepository;
+import com.example.billing_service.service.KafkaDataService;
 
 @SpringBootApplication
 @EnableFeignClients
@@ -27,13 +26,25 @@ public class BillingServiceApplication {
 		SpringApplication.run(BillingServiceApplication.class, args);
 	}
 
-	@Bean
+	// @Bean
 	CommandLineRunner commandLineRunner(BillRepository billRepository, ProductItemRepository productItemRepository,
-			CustomerRestClient customerRestClient, ProductRestClient productRestClient) {
+			KafkaDataService kafkaDataService) {
 
 		return args -> {
-			Collection<Customer> customers = customerRestClient.getAllCustomers().getContent();
-			Collection<Product> products = productRestClient.getAllProducts().getContent();
+
+			while (kafkaDataService.getAllCustomers().isEmpty()
+					|| kafkaDataService.getAllProducts().isEmpty()) {
+				System.out.println("++++");
+
+				Thread.sleep(100);
+			}
+			Collection<Customer> customers = kafkaDataService.getAllCustomers();
+
+			System.out.println(customers);
+			Collection<Product> products = kafkaDataService.getAllProducts();
+			System.out.println(products);
+
+
 
 			customers.forEach((c) -> {
 				Bill bill = Bill.builder()
